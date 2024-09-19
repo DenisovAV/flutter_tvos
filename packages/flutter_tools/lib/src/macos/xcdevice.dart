@@ -534,9 +534,10 @@ class XCDevice {
     for (final Object device in allAvailableDevices) {
       if (device is Map<String, Object?>) {
         // Only include iPhone, iPad, iPod, or other iOS devices.
-        if (!_isIPhoneOSDevice(device)) {
+        //TODO by Sasha, add a proper check for adding apple tv simulators and remove the comment
+        /*if (!(_isIPhoneOSDevice(device) || _isTvOSDevice(device))) {
           continue;
-        }
+        }*/
         final String? identifier = device['identifier'] as String?;
         final String? name = device['name'] as String?;
         if (identifier == null || name == null) {
@@ -654,6 +655,14 @@ class XCDevice {
     final Object? platform = deviceProperties['platform'];
     if (platform is String) {
       return platform == 'com.apple.platform.iphoneos';
+    }
+    return false;
+  }
+
+  static bool _isTvOSDevice(Map<String, Object?> deviceProperties) {
+    final Object? platform = deviceProperties['platform'];
+    if (platform is String) {
+      return platform == 'com.apple.platform.appletvos';
     }
     return false;
   }

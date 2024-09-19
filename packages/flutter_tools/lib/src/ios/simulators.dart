@@ -74,6 +74,8 @@ class IOSSimulatorUtils {
     }
 
     final List<BootedSimDevice> connected = await _simControl.getConnectedDevices();
+    print('AABBB ${connected.map((e)=>e.name)}');
+
     return connected.map<IOSSimulator?>((BootedSimDevice device) {
       final String? udid = device.udid;
       final String? name = device.name;
@@ -156,7 +158,6 @@ class SimControl {
       'list',
       'devices',
       'booted',
-      'iOS',
       '--json',
     ];
     _logger.printTrace(command.join(' '));
@@ -184,7 +185,8 @@ class SimControl {
   /// Returns all the connected simulator devices.
   Future<List<BootedSimDevice>> getConnectedDevices() async {
     final Map<String, Object?> devicesSection = await _listBootedDevices();
-
+    print('AABBB1 ${devicesSection.keys}');
+    print('AABBB2 ${devicesSection.values.map((e)=>e.runtimeType)}');
     return <BootedSimDevice>[
       for (final String deviceCategory in devicesSection.keys)
         if (devicesSection[deviceCategory] case final List<Object?> devicesData)
